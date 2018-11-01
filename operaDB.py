@@ -1,18 +1,33 @@
+import xml.etree.ElementTree as ET
 import psycopg2
 import pandas as pd
 import time
 
 class OperaDB:
-    def __init__(self,user,pa,_host,_port,db,s3):
+    def __init__(self,file,dbname):
+        _host, _port, db, s3, user, pa = self.getDB_XML(file,dbname)
         print('connect to opera server')
         self.conn = psycopg2.connect(
             user=user,
             password=pa,
             host=_host,
-            port=_part,
+            port=_port,
             database=db)
         self.cur = self.conn.cursor()
         self.s3dir = s3
+
+    def getDB_XML(self,file,dbname):
+        db_tree = ET.ElementTree(file=file)
+        db_root = db_tree.getroot()
+        for db_info in db_root.findall('.//'+dbname):
+            host = db_info.find('host').text
+            port = db_info.find('port').text
+            sql = db_info.find('sql').text
+            s3 = db_info.find('s3').text
+            user = db_info.find('user').text
+            _pass = db_info.find('pass').text
+
+        return host, port, sql, s3, user, _pass
 
     def exe_query(self, query):
         #print( query )
