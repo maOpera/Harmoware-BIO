@@ -88,12 +88,19 @@ class OperaDB:
         column_names, df = self.get_DataFrame( query )
         return column_names, df
 
-    def get_DataFromTime(self, tables, tstart, duration):
+    def get_DataFromTime(self, tables, tstart, tend):
         #Create Query
-        d = int(duration*1000/2)
         query = 'SELECT * FROM ' + tables
-        datetime_conditions = ' WHERE time > ' + str(tstart-d) + ' AND ' + 'time < ' + str(tstart+d)
+        datetime_conditions = ' WHERE time > ' + str(tstart) + ' AND ' + 'time < ' + str(tend)
         query = query + datetime_conditions + ';'
         #print(query)
-        column_names, df_omron = self.get_DataFrame( query )
-        return column_names, df_omron
+        column_names, df = self.get_DataFrame( query )
+        return column_names, df
+
+    def get_DataFromDuration(self, tables, tstart, duration):
+        #Create Query
+        d = int(duration*1000)
+        tend = tstart + d
+        #print(query)
+        column_names, df = self.get_DataFromTime( tables, tstart, tend )
+        return column_names, df

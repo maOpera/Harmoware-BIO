@@ -9,5 +9,8 @@ class OmronEye:
     def get_DataFrameFromTrip(self, tripLists, l, offset=0):
         return self.opera.get_DataFromTrip( self.tables, tripLists, l, offset )
 
-    def get_DataFrameFromTime(self, tstart, duration ):
-        return self.opera.get_DataFromTime( self.tables, tstart, duration )
+    def get_DataFrameFromTime(self, tstart, tend ):
+        return self.opera.get_DataFromTime( self.tables, tstart, tend )
+
+    def get_DataFrameFromDuration(self, tstart, duration ):
+        return self.opera.get_DataFromDuration( self.tables, tstart, duration )
