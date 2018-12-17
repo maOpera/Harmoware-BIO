@@ -78,6 +78,14 @@ class Sensors:
         column_names, df = self.opera.get_DataFrame( query )
         return column_names, df
 
+    def get_values(self, df ):
+        vals = []
+        for s in df:
+            l = [float(x.strip()) for x in s.split(',')]
+            vals.append(l)
+
+        return len(vals[0]), vals
+
 class UploadStatus:
     def __init__(self, operaDB):
         self.opera = operaDB
